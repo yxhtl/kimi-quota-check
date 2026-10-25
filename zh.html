@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kimi K3.1、Kimi Code 额度用完了？分清5小时、旧套餐周限额、月度共享额度和API余额，按提示查看下一步与官方规则。无需登录或密钥。">
+  <meta name="theme-color" content="#18352f">
+  <title>Kimi K3.1 / Code 额度判断助手：5小时、周限额与月度额度</title>
+  <link rel="canonical" href="https://yxhtl.github.io/kimi-quota-check/zh.html">
+  <link rel="alternate" hreflang="en" href="https://yxhtl.github.io/kimi-quota-check/"><link rel="alternate" hreflang="zh-CN" href="https://yxhtl.github.io/kimi-quota-check/zh.html"><link rel="alternate" hreflang="x-default" href="https://yxhtl.github.io/kimi-quota-check/">
+  <link rel="stylesheet" href="style.css"><script src="quota-rules.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#check">跳到额度判断</a>
+  <header class="header wrap"><a class="brand" href="zh.html"><span class="brand-icon" aria-hidden="true">≋</span> QUOTA <i>/</i> CHECK</a><nav aria-label="主导航"><a href="#sources">官方依据</a><a href="index.html" lang="en" hreflang="en">English ↗</a></nav></header>
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div><p class="eyebrow">KIMI K3.1 · CODE · 会员额度</p><h1 id="hero-title">额度卡住了？<br><em>先看是哪一道限制。</em></h1><p class="intro">5小时限额、旧套餐周限额、月度共享额度，各算各的。按你看到的提示，找到该查的地方，别等错了恢复时间。</p><a class="primary" href="#check">判断我的额度限制 <span aria-hidden="true">↘</span></a><p class="privacy">不用登录，不填密钥，不读取账号。选择只留在当前页面。</p></div>
+      <div class="meter" aria-label="三种独立用量窗口示意，不代表你的账号余额"><div class="meter-top"><span>三道限制，恢复规则不同</span><span>使用手册 / 01</span></div><div class="meter-row"><b>5h</b><div><span class="meter-label">Kimi Code · 滚动窗口</span><div class="meter-track"><span style="--length:42%"></span></div></div></div><div class="meter-row"><b>7d</b><div><span class="meter-label">Kimi Code · 仅旧套餐</span><div class="meter-track"><span style="--length:68%"></span></div></div></div><div class="meter-row"><b>mo</b><div><span class="meter-label">会员功能 · 月度共享额度</span><div class="meter-track"><span style="--length:88%"></span></div></div></div><p class="meter-note">这是规则示意图，不是你的实时用量。</p></div>
+    </section>
+    <section class="quick-answer wrap"><span class="section-tag">先看这句</span><div><h2>新 Code 套餐没有周限额，但仍受月度额度限制。</h2><p>新 Plus 及以上套餐保留滚动5小时限额和月度共享额度；旧套餐额外保留周限额。开放平台 API 单独计费，不从会员订阅里扣。<a href="#source-membership">[1]</a> <a href="#source-api">[3]</a></p></div></section>
+    <section class="wrap" id="check" aria-labelledby="check-title"><div class="section-heading"><div><p class="eyebrow">01 / 对照你的使用情况</p><h2 id="check-title">你碰到的是哪一种？</h2></div><span class="small-note">个人套餐 · 按你的选择给出指引</span></div>
+      <noscript><p class="no-script">交互判断需要 JavaScript。你仍可阅读下方的<a href="#rules">规则对照表</a>和官方来源。</p></noscript>
+      <div class="workspace">
+        <form class="panel form-panel" id="quota-form">
+          <fieldset><legend><span class="field-no">01</span>你在哪个入口使用 Kimi？</legend><div class="product-options">
+            <label class="product-option"><input type="radio" name="product" value="code" required><span><strong>Kimi Code</strong><small>命令行、IDE、桌面版或 Code 密钥</small></span></label>
+            <label class="product-option"><input type="radio" name="product" value="web"><span><strong>Kimi 网页 / App</strong><small>对话、Work、Agent、PPT 等</small></span></label>
+            <label class="product-option"><input type="radio" name="product" value="api"><span><strong>开放平台 API</strong><small>用开放平台密钥按量付费</small></span></label>
+            <label class="product-option"><input type="radio" name="product" value="unknown"><span><strong>我不确定</strong><small>先帮我分清使用入口</small></span></label>
+          </div><p class="hint">在第三方编程工具里使用 Code 密钥，仍按 Kimi Code 规则判断。</p></fieldset>
+          <fieldset><legend><span class="field-no">02</span>你用的是哪一类会员套餐？</legend><label class="select-label" for="plan"><span class="small-note">Code 套餐类型</span><select id="plan" name="plan" disabled><option value="unknown">我不确定</option><option value="new">新套餐 · Plus / Pro / Max / Ultra</option><option value="legacy">旧套餐 · Andante / Moderato / Allegretto / Allegro</option><option value="go">Go 套餐</option></select></label><p class="hint" id="plan-hint">选择 Kimi Code 后再选套餐。</p></fieldset>
+          <fieldset><legend><span class="field-no">03</span>你看到的提示更接近哪一句？</legend><label class="select-label" for="symptom"><span class="small-note">提示内容</span><select id="symptom" name="symptom"><option value="unknown">只说“额度不足 / 达到限制”，或我不确定</option><option value="five">5-hour usage limit / 5小时用量限制</option><option value="week">Weekly / 7-day usage limit / 周限额</option><option value="month">Monthly quota / 月度额度或账期额度</option><option value="credit">Credit / Extra Usage 余额不足</option><option value="permission">无权使用模型或上下文长度</option><option value="rate">只有429、请求过多或引擎繁忙</option></select></label><p class="hint">看提示文字，别只看状态码。不需要上传报错日志。</p></fieldset>
+          <div class="form-actions"><button class="primary" type="submit">看看下一步 <span aria-hidden="true">↗</span></button><button class="reset" type="reset">重新选择</button></div><p class="feedback" id="form-feedback" aria-live="polite">先选使用入口，再开始判断。</p>
+        </form>
+        <section class="panel result-panel" id="result-panel" aria-label="判断结果"><p class="result-kicker"><span>你该核对的下一步</span><span aria-hidden="true">↳</span></p><div id="empty-result" class="result-placeholder"><div class="empty-icon" aria-hidden="true">[ ? ]</div><h3>提示是线索，不是余额。</h3><p>选好左边的情况，这里会说明对应规则，以及去哪里核对。页面不会猜你的可用额度。</p></div><div id="result-content" hidden><h3 id="result-title" tabindex="-1"></h3><p class="result-summary" id="result-summary"></p><p class="result-label">接下来这样查</p><ol class="result-steps" id="result-steps"></ol><p class="result-caution" id="result-caution"></p><div class="result-links" id="result-links"></div></div></section>
+      </div>
+    </section>
+    <section class="reference wrap" id="rules" aria-labelledby="rules-title"><div class="section-heading"><div><p class="eyebrow">02 / 分开看每一道限制</p><h2 id="rules-title">到底什么时候恢复？</h2></div></div><div class="table-scroll" tabindex="0" role="region" aria-label="额度规则对照表"><table><thead><tr><th scope="col">限制</th><th scope="col">适用情况</th><th scope="col">去哪里核对恢复时间</th></tr></thead><tbody><tr><th scope="row">5小时</th><td>具备 Code 权益的新旧套餐</td><td>看 Code 控制台显示的重置时间，不是从打开本页起再等5小时。</td></tr><tr><th scope="row">7天</th><td>仅旧版 Code 套餐</td><td>看账号的周窗口，按订阅起始日计算，不统一在周一刷新。</td></tr><tr><th scope="row">月度</th><td>会员各功能共用，包括 Code</td><td>看订阅账期。短窗口重置，不会同时补回月度额度。</td></tr><tr><th scope="row">API 余额</th><td>开放平台 API</td><td>看开放平台自己的余额和用量；续费会员不会补入 API 余额。</td></tr></tbody></table></div><p class="table-note">依据官方文档整理，面向个人套餐。企业政策、额外用量及账号限制可能不同。<a href="#sources">查看依据 ↓</a></p></section>
+    <section class="bottom-grid wrap"><div class="faq"><p class="eyebrow">03 / 再试之前</p><h2>还有这些常见疑问。</h2><details><summary>5小时窗口恢复了，为什么还是不能用？</summary><p>月度共享额度可能已经用尽，旧套餐还可能达到周限额。要在官方页面分别核对适用的用量条。</p></details><details><summary>能算出我还剩多少 Token 吗？</summary><p>不能。官方没有给出适用于所有账号的固定 Token 上限。套餐和任务都会影响消耗，不能把额度百分比直接换成固定 Token 数。</p></details><details><summary>换设备或密钥，能重新获得额度吗？</summary><p>Code 设备和 Code 密钥共用账号用量。开放平台密钥是另一套计费，不代表获得了一份新的会员额度。</p></details><details><summary>这个页面会重置额度或读取我的账号吗？</summary><p>不会。它只根据你的选择筛选公开指引，不上传、不保存、不连接账号。准确余额和恢复时间以 Kimi 账号页面为准。</p></details></div><div class="sources" id="sources"><p class="eyebrow">04 / 每个判断都有依据</p><h2>回到官方说明。</h2><ol><li id="source-membership"><a href="https://www.kimi.com/code/docs/en/kimi-code/membership.html">Kimi Code · 会员权益与额度规则 ↗</a></li><li id="source-errors"><a href="https://www.kimi.com/code/docs/en/kimi-code/error-reference.html">Kimi Code · 报错对照与处理 ↗</a></li><li id="source-api"><a href="https://platform.kimi.com/docs/pricing/chat">Kimi 开放平台 · API 计费说明 ↗</a></li><li id="source-shared"><a href="https://www.kimi.com/help/membership/membership-update-rules">Kimi · 共享额度与新旧套餐规则 ↗</a></li></ol><p class="source-note">规则核对于 <time datetime="2026-10-24">2026年10月24日</time>。准确余额、权益和恢复时间需要查看官方账号页面。提示与规则矛盾时，先核对账号及套餐，再联系 Kimi 客服。</p></div></section>
+  </main><footer class="wrap"><p>QUOTA / CHECK · 独立说明页，与月之暗面无隶属关系。<br>无统计追踪、Cookie、账号连接或自动模型请求。</p><a href="#hero-title">回到顶部 ↑</a></footer>
+</body>
+</html>
