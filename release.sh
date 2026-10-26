@@ -31,6 +31,8 @@ node tools/build.cjs
 node --test tests/rules.test.cjs
 node --check app.js
 node --check quota-rules.js
+node --check analytics.js
+node tools/check-analytics.cjs
 git diff --check
 git status --short
 network_git ls-remote github HEAD >/dev/null || die "远端读取失败，未提交或推送。"

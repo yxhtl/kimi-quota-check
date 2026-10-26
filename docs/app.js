@@ -114,6 +114,7 @@
     empty.hidden = true;
     content.hidden = false;
     content.dataset.result = key;
+    if (typeof window.reportQuotaUse === 'function') window.reportQuotaUse();
     feedback.textContent = ui.ready;
     title.focus({ preventScroll: true });
     document.getElementById('result-panel').scrollIntoView({ block: 'nearest', behavior: 'auto' });
