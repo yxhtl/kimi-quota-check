@@ -16,11 +16,10 @@
     page_referrer: document.referrer ? new URL(document.referrer).origin + new URL(document.referrer).pathname : '',
     ...(debugMode ? { debug_mode: true } : {})
   });
-  let reported = false;
-  window.reportQuotaUse = () => {
-    if (reported) return;
-    reported = true;
-    window.gtag('event', 'check_start', { send_to: measurementId });
+  const pendingEvents = new Set(['check_start', 'check_result', 'check_official_click']);
+  window.reportQuotaEvent = (name) => {
+    if (!pendingEvents.delete(name)) return;
+    window.gtag('event', name, { send_to: measurementId });
   };
   const tag = document.createElement('script');
   tag.async = true;

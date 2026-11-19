@@ -9,6 +9,7 @@
   const empty = document.getElementById('empty-result');
   const content = document.getElementById('result-content');
   const title = document.getElementById('result-title');
+  const resultLinks = document.getElementById('result-links');
   const ui = zh ? {
     initial: '先选使用入口，再开始判断。',
     changed: '选择已更新，请点“看看下一步”重新判断。',
@@ -85,7 +86,12 @@
     feedback.textContent = message;
   }
 
+  function reportEvent(name) {
+    if (typeof window.reportQuotaEvent === 'function') window.reportQuotaEvent(name);
+  }
+
   form.addEventListener('change', function (event) {
+    if (event.target.matches('input[name="product"], select[name="plan"], select[name="symptom"]')) reportEvent('check_start');
     if (event.target.name === 'product') {
       plan.disabled = event.target.value !== 'code';
       if (plan.disabled) plan.value = 'unknown';
@@ -96,6 +102,7 @@
 
   form.addEventListener('submit', function (event) {
     event.preventDefault();
+    reportEvent('check_start');
     const values = new FormData(form);
     const key = rules.classify({ product: values.get('product'), plan: values.get('plan') || 'unknown', symptom: values.get('symptom') });
     const [heading, summary, steps, caution, refs] = results[key];
@@ -107,7 +114,7 @@
       return li;
     }));
     document.getElementById('result-caution').textContent = caution;
-    document.getElementById('result-links').replaceChildren(...refs.map(function (ref) {
+    resultLinks.replaceChildren(...refs.map(function (ref) {
       const anchor = document.createElement('a');
       anchor.href = links[ref];
       anchor.textContent = ui[ref];
@@ -116,7 +123,7 @@
     empty.hidden = true;
     content.hidden = false;
     content.dataset.result = key;
-    if (typeof window.reportQuotaUse === 'function') window.reportQuotaUse();
+    reportEvent('check_result');
     feedback.textContent = ui.ready;
     title.focus({ preventScroll: true });
     document.getElementById('result-panel').scrollIntoView({ block: 'nearest', behavior: 'auto' });
@@ -126,6 +133,10 @@
     plan.disabled = true;
     document.getElementById('plan-hint').textContent = zh ? '选择 Kimi Code 后再选套餐。' : 'Choose Kimi Code to use this field.';
     clearResult(ui.initial);
+  });
+
+  resultLinks.addEventListener('click', function (event) {
+    if (!content.hidden && event.target.closest('a[href]')) reportEvent('check_official_click');
   });
 
   feedback.textContent = ui.initial;
