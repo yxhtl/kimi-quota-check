@@ -117,6 +117,8 @@
     resultLinks.replaceChildren(...refs.map(function (ref) {
       const anchor = document.createElement('a');
       anchor.href = links[ref];
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
       anchor.textContent = ui[ref];
       return anchor;
     }));
