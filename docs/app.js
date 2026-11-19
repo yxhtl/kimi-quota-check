@@ -1,5 +1,7 @@
 (function () {
   'use strict';
+  const rules = window.QuotaRules;
+  if (!rules || typeof rules.classify !== 'function') return;
   const zh = document.documentElement.lang === 'zh-CN';
   const form = document.getElementById('quota-form');
   const plan = document.getElementById('plan');
@@ -95,7 +97,7 @@
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     const values = new FormData(form);
-    const key = window.QuotaRules.classify({ product: values.get('product'), plan: values.get('plan') || 'unknown', symptom: values.get('symptom') });
+    const key = rules.classify({ product: values.get('product'), plan: values.get('plan') || 'unknown', symptom: values.get('symptom') });
     const [heading, summary, steps, caution, refs] = results[key];
     title.textContent = heading;
     document.getElementById('result-summary').textContent = summary;
@@ -125,4 +127,7 @@
     document.getElementById('plan-hint').textContent = zh ? '选择 Kimi Code 后再选套餐。' : 'Choose Kimi Code to use this field.';
     clearResult(ui.initial);
   });
+
+  feedback.textContent = ui.initial;
+  form.querySelector('button[type="submit"]').disabled = false;
 })();
