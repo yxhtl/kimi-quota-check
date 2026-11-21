@@ -20,7 +20,10 @@
     subscription: '查看官方订阅与额度页 ↗',
     rules: '核对会员额度规则 ↗',
     errors: '核对官方报错说明 ↗',
-    api: '核对开放平台 API 计费 ↗'
+    api: '核对开放平台 API 计费 ↗',
+    apiChina: '打开中国站 API 控制台 ↗',
+    apiInternational: '打开国际站 API 控制台 ↗',
+    apiErrors: '查开放平台 API 错误码 ↗'
   } : {
     initial: 'Choose an entry to begin.',
     changed: 'Choices changed. Run the check again for updated guidance.',
@@ -31,20 +34,30 @@
     subscription: 'Open official subscription and quota page ↗',
     rules: 'Verify membership quota rules ↗',
     errors: 'Verify the official error reference ↗',
-    api: 'Verify Open Platform API billing ↗'
+    api: 'Verify Open Platform API billing ↗',
+    apiChina: 'Open China API console ↗',
+    apiInternational: 'Open international API console ↗',
+    apiErrors: 'Check API error codes ↗'
   };
   const links = {
     code: 'https://www.kimi.com/code/console',
     subscription: 'https://www.kimi.com/membership/subscription?tab=quota',
     rules: 'https://www.kimi.com/code/docs/en/kimi-code/membership.html',
     errors: 'https://www.kimi.com/code/docs/en/kimi-code/error-reference.html',
-    api: 'https://platform.kimi.com/docs/pricing/chat'
+    api: 'https://platform.kimi.com/docs/pricing/chat',
+    apiChina: 'https://platform.kimi.com/console',
+    apiInternational: 'https://platform.kimi.ai/console',
+    apiErrors: zh ? 'https://platform.kimi.com/docs/api/errors' : 'https://platform.kimi.ai/docs/api/errors'
   };
   // All result text is authored guidance; no message or credential is accepted.
   const results = zh ? {
     'choose-product': ['先分清你用的入口', '目前还没有选择使用入口，无法匹配额度规则。', ['选择 Kimi Code、网页 / App，或开放平台 API。', '不清楚密钥来自哪里时，选“我不确定”。'], '不同产品可能显示相似报错，但不共用同一套计费。', ['rules', 'api']],
     'unknown-product': ['先找出密钥或服务来自哪里', '仅凭“在第三方客户端使用”还不能判断。Code 密钥与开放平台密钥适用不同规则。', ['查看客户端里配置的服务入口，以及密钥是从哪个官方控制台取得的；不要把密钥贴给别人。', 'Code 订阅密钥选 Kimi Code；开放平台按量密钥选 API。'], '无法确认时，先看两个官方说明，不猜是哪一层额度。', ['rules', 'api']],
-    'api': ['查开放平台，别等会员窗口', '你选择的是开放平台 API。它按量计费，与 Kimi 会员订阅分开。', ['在开放平台核对余额、用量和实际报错说明。', '如果提示5小时或周限额，回查客户端是否实际上用了 Code 密钥。'], '本页没有连接 API 账号；余额不足、请求限速与权限问题需要分别核对。', ['api']],
+    'api': ['查开放平台余额和报错', '开放平台 API 单独按量计费。中国站和国际站各有自己的账户、余额和密钥。', [
+      '打开签发这把 API 密钥的平台，在账户控制台核对余额和用量。',
+      '按错误码和错误类型核对官方说明。仅有 429 时，先区分余额不足、请求限速和服务繁忙。',
+      '如果提示明确写 5 小时或周限额，回查客户端是否用了 Code 密钥。'
+    ], '用量以相应平台显示为准。这里无需输入账号或密钥。', ['apiChina', 'apiInternational', 'apiErrors']],
     'go': ['Go 套餐没有 Kimi Code 权益', '官方规则列明 Go 不含 Code 额度。短时窗口恢复不能补上缺失的服务权益。', ['在订阅页确认当前套餐名称，以及正在使用的账号。', '回查客户端是否使用了另一个账号或另一类密钥。'], '这是权益核对，不代表网页会员功能或 API 余额也已用完。', ['rules', 'code']],
     'web-code-conflict': ['使用入口与提示对不上', '你选择了网页 / App，但5小时和旧套餐周窗口是 Code 的限制规则。', ['确认错误来自哪一个任务或客户端，是否实际调用了 Code 服务。', '核对网页订阅里的月度额度；若来自 Code，切换入口重新判断。'], '先保留这处矛盾，不能据此给出恢复时间。', ['rules', 'subscription']],
     'monthly': ['先看月度共享额度', '这条提示指向月度额度。会员各功能共享月度用量，Code 的短窗口恢复也不会补回它。', ['查看订阅页的月度余额和下一次刷新时间。', '若你在用 Code，再分别核对5小时窗口，以及旧套餐的周窗口。'], '按账号显示的订阅账期核对，不统一在每月1日刷新；本页不计算倒计时。', ['subscription', 'rules']],
@@ -62,7 +75,11 @@
   } : {
     'choose-product': ['Identify the entry first.', 'No product has been selected yet.', ['Choose Code, web / app, or the Open Platform API.', 'Choose “Not sure” if the key’s origin is unclear.'], 'Similar messages can belong to separate billing products.', ['rules', 'api']],
     'unknown-product': ['Find where the service or key comes from.', 'Using a third-party client alone does not identify the billing product.', ['Check the configured provider and where the key was issued. Do not share the key.', 'A Code subscription key belongs to Code; a platform pay-as-you-go key belongs to API.'], 'If the origin is still unclear, verify the official descriptions rather than guessing a limit.', ['rules', 'api']],
-    'api': ['Check the platform, not a membership window.', 'Open Platform API usage is billed separately from Kimi membership.', ['Verify the platform balance, usage and exact error.', 'A 5-hour or weekly message is a reason to check whether the client actually uses a Code key.'], 'This page cannot read your API account or distinguish every platform error.', ['api']],
+    'api': ['Check the API balance and error.', 'API charges are billed by usage, separately from Kimi membership. The China and international platforms have their own accounts, balances and keys.', [
+      'Open the console for the platform that issued your API key and check its balance and usage.',
+      'Use the error code and type to look up the official guidance. A 429 can mean insufficient balance, a rate limit, or a busy service.',
+      'If the message explicitly mentions a 5-hour or weekly limit, check whether the client is using a Code key.'
+    ], 'This check needs no account or API key.', ['apiChina', 'apiInternational', 'apiErrors']],
     'go': ['Go does not include Kimi Code.', 'The documented Go tier has no coding allowance.', ['Confirm the plan and signed-in account on the subscription page.', 'Check whether the client uses a different account or key type.'], 'This does not establish that your web membership or API balance is exhausted.', ['rules', 'code']],
     'web-code-conflict': ['The entry and message conflict.', 'You chose web / app, but the selected window is a Code-specific rule.', ['Verify which client or task produced the message.', 'Check the web monthly allowance; if the request uses Code, change the entry and check again.'], 'Conflicting evidence is not enough to provide a reset time.', ['rules', 'subscription']],
     'monthly': ['Check the shared monthly allowance.', 'The message points to a monthly limit, separate from Code’s shorter windows.', ['Check the monthly balance and next refresh on the subscription page.', 'Code users should also check the 5-hour window and any legacy weekly limit.'], 'Use the account’s billing cycle, not a universal first-of-month reset. No countdown is calculated here.', ['subscription', 'rules']],
